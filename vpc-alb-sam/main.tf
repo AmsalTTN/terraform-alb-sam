@@ -32,6 +32,10 @@ module "vpc" {
   tags = local.tags
 }
 
+################################################################################
+# ALB Module
+################################################################################
+
 resource "random_pet" "this" {
   length = 2
 }
@@ -95,17 +99,22 @@ module "shared_alb" {
 
 }
 
+resource "random_pet" "that" {
+  length = 2
+}
+
+################################################################################
+# Lambda Module
+################################################################################
+
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
 
-  function_name = "HelloWorld"
+  function_name = "HelloWorld-${random_pet.that.id}"
   description   = "HelloWorld using SAM & Terraform"
   handler       = "helloworld_38.lambda_handler"
   runtime       = "python3.8"
   publish = true
-
-  attach_policy = true
-  policy        = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 
   attach_policy_statements = true
   policy_statements = {
