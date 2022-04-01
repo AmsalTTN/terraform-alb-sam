@@ -1,9 +1,14 @@
-module "setup-backend" {
-    source = "./setup-backend"
-    dynamodb_table  = "terraform-app-state"
-    region          = "ap-south-1"
-    tf_state_bucket = "amsalkhan"
+terraform {
+
+  backend "s3" {
+    bucket         = "amsalkhan"
+    key            = "vpc-sam-alb/state.tfstate"
+    region         = "ap-south-1"
+    encrypt        = "true"
+    dynamodb_table = "terraform-app-state"
+  }
 }
+
 
 module "vpc-alb-sam" {
   source = "./vpc-alb-sam"

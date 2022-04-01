@@ -5,10 +5,10 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "${var.tf_state_bucket}-${data.aws_caller_identity.current.account_id}"
+  bucket = "${var.tf_state_bucket}"
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 
   tags = {
